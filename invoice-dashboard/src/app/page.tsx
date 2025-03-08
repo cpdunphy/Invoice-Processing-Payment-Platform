@@ -1,12 +1,20 @@
 import { ModeToggle } from "@/components/ModeToggle";
+import CTA from "@/components/sections/cta/default";
+import FAQ from "@/components/sections/faq/default";
+import Hero from "@/components/sections/hero/default";
+import Items from "@/components/sections/items/default";
+import Navbar from "@/components/sections/navbar/default";
+import { Footer } from "@/components/ui/footer";
 
 export default function Home() {
   return (
     <>
-      <h1>AI-Powered Invoice Dashboard</h1>
-      <div>
-        <ModeToggle />
-      </div>
+      <Navbar />
+      <Hero />
+      <Items />
+      <FAQ />
+      <CTA />
+      <Footer />
     </>
   );
 }
