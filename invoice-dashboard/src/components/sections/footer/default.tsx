@@ -16,7 +16,7 @@ export default function FooterSection() {
             <FooterColumn className="col-span-2 sm:col-span-3 md:col-span-1">
               <div className="flex items-center gap-2">
                 <LaunchUI />
-                <h3 className="text-xl font-bold">Launch UI</h3>
+                <h3 className="text-xl font-bold">Mesh</h3>
               </div>
             </FooterColumn>
             <FooterColumn>
@@ -78,7 +78,7 @@ export default function FooterSection() {
             </FooterColumn>
           </FooterContent>
           <FooterBottom>
-            <div>© 2025 Mikołaj Dobrucki. All rights reserved</div>
+            <div>© 2025 Capstone Project. All rights reserved</div>
             <div className="flex items-center gap-4">
               <a href="/">Privacy Policy</a>
               <a href="/">Terms of Service</a>

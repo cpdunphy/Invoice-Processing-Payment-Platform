@@ -21,7 +21,7 @@ export default function Navbar() {
               className="flex items-center gap-2 text-xl font-bold"
             >
               <LaunchUI />
-              Taktile
+              Mesh
             </a>
             <Navigation />
           </NavbarLeft>
@@ -30,7 +30,7 @@ export default function Navbar() {
               Sign in
             </a>
             <Button variant="default" asChild>
-              <a href="/">Get Started</a>
+              <a href="/dashboard">Get Started</a>
             </Button>
             <Sheet>
               <SheetTrigger asChild>
@@ -49,10 +49,10 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2 text-xl font-bold"
                   >
-                    <span>Launch UI</span>
+                    <span>Launch Mesh</span>
                   </a>
                   <a
-                    href="/"
+                    href="/dashboard"
                     className="text-muted-foreground hover:text-foreground"
                   >
                     Getting Started
@@ -61,7 +61,7 @@ export default function Navbar() {
                     href="/"
                     className="text-muted-foreground hover:text-foreground"
                   >
-                    Components
+                    Products
                   </a>
                   <a
                     href="/"

@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/ModeToggle";
 import CTA from "@/components/sections/cta/default";
 import FAQ from "@/components/sections/faq/default";
 import Hero from "@/components/sections/hero/default";
