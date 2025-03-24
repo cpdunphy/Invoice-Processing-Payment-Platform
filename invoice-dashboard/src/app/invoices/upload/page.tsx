@@ -1,5 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { Chart1 } from "@/components/chart1"
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,21 +6,22 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { ModeToggle } from "@/components/ModeToggle"
+} from "@/components/ui/sidebar";
+import { ModeToggle } from "@/components/ModeToggle";
+import PDFTextExtractor from "@/app/invoices/PDFTextExtractor";
 
 export default function Page() {
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-      <header className="flex h-16 shrink-0 items-center justify-between px-4">
+        <header className="flex h-16 shrink-0 items-center justify-between px-4">
           {/* Left Section: Sidebar & Breadcrumb */}
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
@@ -29,7 +29,11 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">Home Page</BreadcrumbLink>
+                  <BreadcrumbLink href="#">Invoices</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Upload Invoice</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -37,15 +41,13 @@ export default function Page() {
 
           <ModeToggle />
         </header>
+
+        {/* Optional content section */}
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
+          <PDFTextExtractor />
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

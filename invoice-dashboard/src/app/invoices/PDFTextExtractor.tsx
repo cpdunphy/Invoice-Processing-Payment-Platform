@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { extractTextFromPDF } from "./extractTextFromPDF";
+import { extractTextFromPDF } from "../invoices/extractTextFromPDF";
 
 export default function PDFTextExtractor() {
   const [text, setText] = useState("");
