@@ -29,8 +29,8 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Steve",
+    email: "Steve@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
@@ -52,88 +52,46 @@ const data = {
   ],
   navMain: [
     {
-      title: "Dashboard",
-      url: "#",
+      title: "Analytics",
+      url: "/dashboard",
       icon: SquareTerminal,
       isActive: true,
       items: [
-        {
-          title: "All Invoices",
-          url: "#",
-        },
-        {
-          title: "Pending Review",
-          url: "#",
-        },
-        {
-          title: "Completed",
-          url: "#",
-        },
+        { title: "Home Page", url: "/dashboard" },
+        { title: "All Invoices", url: "/dashboard/all-invoices" },
+        { title: "Pending Review", url: "/dashboard/pending" },
+        { title: "Completed", url: "/dashboard/completed" },
       ],
     },
     {
       title: "Invoices",
-      url: "#",
+      url: "/invoices",
       icon: Bot,
       items: [
-        {
-          title: "Upload Invoice",
-          url: "#",
-        },
-        {
-          title: "Manual Entry",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
+        { title: "Upload Invoice", url: "/invoices/upload" },
+        { title: "Manual Entry", url: "/invoices/manual" },
       ],
     },
     {
       title: "Documentation",
-      url: "#",
+      url: "/documentation",
       icon: BookOpen,
       items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
+        { title: "Introduction", url: "/documentation/introduction" },
+        { title: "Get Started", url: "/documentation/get-started" },
+        { title: "Tutorials", url: "/documentation/tutorials" },
+        { title: "Changelog", url: "/documentation/changelog" },
       ],
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Settings2,
       items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
+        { title: "General", url: "/settings/general" },
+        { title: "Team", url: "/settings/team" },
+        { title: "Billing", url: "/settings/billing" },
+        { title: "Limits", url: "/settings/limits" },
       ],
     },
   ],
