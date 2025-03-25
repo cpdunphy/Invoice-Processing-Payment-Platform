@@ -6,6 +6,7 @@ import { extractTextFromPDF } from "../invoices/extractTextFromPDF";
 
 export default function PDFTextExtractor() {
   const [text, setText] = useState("");
+  const [parsed, setParsed] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,8 +15,15 @@ export default function PDFTextExtractor() {
 
     setLoading(true);
     try {
-      const extracted = await extractTextFromPDF(file);
-      setText(extracted);
+      const invoiceText = await extractTextFromPDF(file);
+      setText(invoiceText);
+      const res = await fetch("/api/extract-invoice", {
+        method: "POST",
+        body: JSON.stringify({ invoiceText }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await res.json();
+      setParsed(json);
     } catch (err) {
       console.error("Failed to extract text:", err);
       setText("Failed to extract text.");
@@ -33,6 +41,16 @@ export default function PDFTextExtractor() {
       />
 
       {loading ? <p className="mt-2">Extracting text...</p> : <pre className="mt-2">{text}</pre>}
+
+      {loading ? (
+        <p className="mt-2">Processing text...</p>
+      ) : (
+        Object.entries(parsed).map(([key, value]) => (
+          <p key={key}>
+            <strong>{key}:</strong> {String(value)}
+          </p>
+        ))
+      )}
     </div>
   );
 }
