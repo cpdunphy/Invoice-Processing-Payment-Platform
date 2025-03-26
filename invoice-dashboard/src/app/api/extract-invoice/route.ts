@@ -1,6 +1,7 @@
 import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
 
+console.log("XXXXXXXXXXXXXXXX PARSING")
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
   const messages: OpenAI.ChatCompletionMessageParam[] = [
     {
       role: "system",
-      content: `You are an expert invoice parser. Given raw text extracted from a scanned or OCR'd invoice, return key details in JSON. Always respond with only valid JSON.`,
+      content: `You are an expert invoice parser. Given raw text extracted from a scanned or OCR'd invoice, return key details in JSON. Always respond with only valid JSON. Always give it on a neat list.`,
     },
     {
       role: "user",
