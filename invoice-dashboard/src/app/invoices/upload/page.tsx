@@ -1,3 +1,8 @@
+"use client";
+
+
+
+import { useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -17,7 +22,10 @@ import { ModeToggle } from "@/components/ModeToggle";
 import PDFTextExtractor from "@/app/invoices/PDFTextExtractor";
 import InvoiceUploadButton from "@/components/file-uploadButton";
 
+
 export default function Page() {
+  const [fileKey, setFileKey] = useState("");
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -47,9 +55,8 @@ export default function Page() {
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <PDFTextExtractor />
           <div className="flex justify-end">
-            <InvoiceUploadButton />
+            <InvoiceUploadButton  onUploadSuccess={setFileKey}/>
           </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
         </div>
       </SidebarInset>
     </SidebarProvider>

@@ -34,11 +34,6 @@ export default function PDFTextExtractor() {
 
   return (
     <div>
-      <Input
-        type="file"
-        accept=".pdf"
-        onChange={handleFileUpload}
-      />
 
       {loading ? <p className="mt-2">Extracting text...</p> : <pre className="mt-2">{text}</pre>}
 
