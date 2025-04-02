@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { Chart1 } from "@/components/chart1";
+import { Chart2 } from "@/components/bar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -40,18 +40,18 @@ export default function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="rounded-xl bg-muted/50 h-32 p-4">
-              Total Invoices
+            <div className="rounded-xl bg-muted/50 h-48 p-4">
+              Total Revenue
             </div>
-            <div className="rounded-xl bg-muted/50 h-32 p-4">Total Spend</div>
-            <div className="rounded-xl bg-muted/50 h-32 p-4">
+            <div className="rounded-xl bg-muted/50 h-48 p-4">Total Spend</div>
+            <div className="rounded-xl bg-muted/50 h-48 p-4">
               Invoices Needing Review
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="rounded-xl bg-muted/50 md:col-span-2 p-4">
-              <Chart1 />
+              <Chart2 />
             </div>
             <div className="rounded-xl bg-muted/50 p-4">
               <PieChart1 />
