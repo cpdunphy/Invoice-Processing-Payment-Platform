@@ -15,10 +15,12 @@ import {
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/ModeToggle";
 import { DataTable } from "@/components/data-table";
+import { getInvoices } from "@/lib/db/queries";
 
-import data from "./data.json"
+export default async function Page() {
+  // Fetch the invoices data from the database
+  const invoices = await getInvoices();
 
-export default function Page() {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -46,7 +48,8 @@ export default function Page() {
 
         {/* Optional content section */}
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-         < DataTable data={data} />
+          {/* DataTable showing invoices */}
+          <DataTable data={invoices} />
         </div>
       </SidebarInset>
     </SidebarProvider>
