@@ -17,8 +17,11 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/ModeToggle";
-import PDFTextExtractor from "@/app/invoices/PDFTextExtractor";
-import InvoiceUploadButton from "@/components/file-uploadButton";
+import dynamic from "next/dynamic";
+
+const InvoiceUploadButton = dynamic(() => import("@/components/file-uploadButton"), {
+  ssr: false,
+});
 
 
 export default function Page() {
@@ -51,7 +54,6 @@ export default function Page() {
 
         {/* Optional content section */}
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <PDFTextExtractor />
           <div className="flex justify-end">
             <InvoiceUploadButton  onUploadSuccess={setFileKey}/>
           </div>
