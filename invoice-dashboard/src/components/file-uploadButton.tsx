@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 import InvoiceEditor from "@/components/invoice-editor";
 import { Inbox } from "lucide-react";
 import InvoiceForm from "@/components/invoice-form";
+import { storeInvoice } from "@/app/actions/store-invoice";
+
 
 export default function InvoiceUploader({
   onUploadSuccess,
@@ -94,10 +96,39 @@ export default function InvoiceUploader({
       return;
     }
   
-    await handleUpload(); // For now, this just uploads to S3
-    toast.success("Invoice submitted successfully! ✅");
-    console.log("Parsed invoice data:", parsed); // Later: Save to DB
-  };
+    setUploading(true);
+    try {
+      const s3Response = await uploadToS3(file);
+  
+      if (!s3Response?.file_key) {
+        toast.error("Upload to S3 failed");
+        return;
+      }
+  
+      const fileUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${s3Response.file_key}`;
+  
+      const result = await storeInvoice({
+        vendorName: parsed.vendor,
+        fileUrl,
+        status: "complete", // maybe dynamic later
+        totalAmount: parseFloat(parsed.total),
+        dueDate: parsed.due_date,
+        invoiceNumber: parsed.invoice_number,
+      });
+  
+      if (result.success) {
+        toast.success("Invoice submitted and saved");
+        onUploadSuccess(s3Response.file_key); // optional
+      } else {
+        toast.error(result.error || "Failed to store invoice");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong during confirmation");
+    } finally {
+      setUploading(false);
+    }
+  };  
 
   // API call to GPT
   const parseInvoiceText = async (text: string) => {
