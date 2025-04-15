@@ -1,7 +1,7 @@
 import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
 
-console.log("XXXXXXXXXXXXXXXX PARSING")
+console.log("XXXXXXXXXXXXXXXX PARSING");
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -12,11 +12,20 @@ export async function POST(req: Request) {
   const messages: OpenAI.ChatCompletionMessageParam[] = [
     {
       role: "system",
-      content: `You are an expert invoice parser. Given raw text extracted from a scanned or OCR'd invoice, return key details in JSON. Always respond with only valid JSON. Always give it on a neat list.`,
+      content: `You are an expert at parsing invoices from OCR text. Always respond with ONLY valid JSON. Extract the following fields:
+        - invoice_number (string)
+        - transaction_date (string, ISO 8601 format: YYYY-MM-DD)
+        - due_date (string, ISO 8601 format)
+        - vendor (string)
+        - customer (string)
+        - total (number)
+        - currency (3-letter code, e.g. USD, EUR)
+
+        Do not include any explanations or additional text. Just return clean JSON.`,
     },
     {
       role: "user",
-      content: `Here is the invoice text:\n\n${invoiceText}\n\nExtract and return key fields like transaction_date (ISO format), invoice_number, vendor, total (as number), currency, and due_date (ISO format).`,
+      content: `Here is the raw invoice text:\n\n${invoiceText}\n\nExtract and return the fields listed above.`,
     },
   ];
 
@@ -29,6 +38,6 @@ export async function POST(req: Request) {
   });
 
   const data = response.choices[0].message?.content;
-
+  
   return NextResponse.json(JSON.parse(data || "{}"));
 }
