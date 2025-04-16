@@ -110,7 +110,7 @@ export default function InvoiceUploader({
       const result = await storeInvoice({
         vendorName: parsed.vendor,
         fileUrl,
-        status: "complete", // maybe dynamic later
+        status: "Done", // maybe dynamic later
         totalAmount: parseFloat(parsed.total),
         dueDate: parsed.due_date,
         invoiceNumber: parsed.invoice_number,

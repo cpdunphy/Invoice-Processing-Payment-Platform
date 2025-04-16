@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 interface StoreInvoiceParams {
   vendorName: string;
   fileUrl: string;
-  status: "pending" | "complete";
+  status: "pending" | "Done";
   totalAmount: number;
   dueDate: string; // ISO format
   invoiceNumber: string;

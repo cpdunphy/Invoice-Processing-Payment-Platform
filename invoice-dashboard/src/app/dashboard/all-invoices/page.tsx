@@ -16,10 +16,21 @@ import {
 import { ModeToggle } from "@/components/ModeToggle";
 import { DataTable } from "@/components/data-table";
 import { getInvoices } from "@/lib/db/queries";
+import { invoiceColumns } from "@/components/invoice-columns";
+
 
 export default async function Page() {
   // Fetch the invoices data from the database
-  const invoices = await getInvoices();
+  const rawInvoices = await getInvoices();
+
+  // Normalize the data to match the expected format
+  const invoices = rawInvoices.map((inv) => ({
+    id: inv.id,
+    vendor: inv.vendorName ?? "—",
+    status: inv.status ?? "unknown",
+    amount: inv.totalAmount ?? "0.00",
+    date: inv.uploadDate?.toISOString().split("T")[0] ?? "N/A",
+  }));
 
   return (
     <SidebarProvider>
@@ -49,7 +60,7 @@ export default async function Page() {
         {/* Optional content section */}
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           {/* DataTable showing invoices */}
-          <DataTable data={invoices} />
+          <DataTable data={invoices} columns={invoiceColumns} />
         </div>
       </SidebarInset>
     </SidebarProvider>
