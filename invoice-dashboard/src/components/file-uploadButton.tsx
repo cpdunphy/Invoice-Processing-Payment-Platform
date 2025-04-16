@@ -25,6 +25,8 @@ export default function InvoiceUploader({
   const [fileKey, setFileKey] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [isFromOCR, setIsFromOCR] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
 
   const [parsed, setParsed] = useState({
     invoice_number: "",
@@ -118,6 +120,7 @@ export default function InvoiceUploader({
   
       if (result.success) {
         toast.success("Invoice submitted and saved");
+        setShowSuccess(true);
         onUploadSuccess(s3Response.file_key); // optional
       } else {
         toast.error(result.error || "Failed to store invoice");
@@ -145,63 +148,96 @@ export default function InvoiceUploader({
 
   return (
     <div className="flex flex-col gap-4 items-start w-full">
-      {!previewUrl && (
-        <div className="flex items-center justify-center min-h-[60vh] w-full">
-          <label className="border-2 border-dashed dark:border-white/30 border-gray-400 rounded-2xl px-12 py-20 flex flex-col items-center justify-center gap-4 w-full max-w-xl bg-white dark:bg-[#111] cursor-pointer hover:shadow-lg transition-all">
-            <Inbox className="w-10 h-10 text-gray-500 dark:text-gray-400" />
-            <span className="text-gray-500 dark:text-gray-400 text-base font-medium">
-              Drag and drop your Invoice here
-            </span>
-            <input
-              type="file"
-              accept=".pdf"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-          </label>
+      {showSuccess ? (
+        <div className="flex flex-col items-center justify-center w-full h-[70vh] text-center space-y-6">
+          <h2 className="text-3xl font-bold text-green-600">✅ Invoice Saved Successfully!</h2>
+          <p className="text-gray-500 dark:text-gray-300 text-lg">
+            You can upload another invoice or close this window.
+          </p>
+          <button
+            onClick={() => {
+              setShowSuccess(false);
+              setFile(null);
+              setPreviewUrl(null);
+              setText("");
+              setParsed({
+                invoice_number: "",
+                transaction_date: "",
+                due_date: "",
+                vendor: "",
+                customer: "",
+                total: "",
+                currency: "USD",
+              });
+            }}
+            className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+          >
+            Upload Another Invoice
+          </button>
         </div>
-      )}
-
-      {previewUrl && (
-        <div className="flex flex-col lg:flex-row gap-6 w-full mt-6 h-[80vh]">
-          <div className="flex-1 w-full h-[80vh]">
-            <iframe
-              src={`${previewUrl}#zoom=page-fit`}
-              className="w-full h-full rounded-xl shadow-lg border border-gray-700"
-              style={{ border: "none" }}
-              title="PDF Preview"
-            />
-          </div>
-
-          <div className="flex-1 w-full flex flex-col h-[80vh]">
-            <InvoiceForm
-              data={parsed}
-              onChange={handleParsedChange}
-              onSubmit={handleConfirm}
-              submitting={uploading}
-            />
-            <div className="flex justify-between items-center mt-4">
-              {file && (
-                <div className="flex items-center space-x-4">
-                  <label className="inline-flex items-center px-4 py-2 bg-gray-800 text-sm text-white rounded cursor-pointer hover:bg-gray-700 transition">
-                    Change Document
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      className="hidden"
-                      onChange={handleFileChange}
-                    />
-                  </label>
-                  <span className="text-sm text-gray-400 truncate max-w-xs">
-                    Current file: <span className="font-medium text-white">{file.name}</span>
-                  </span>
-                </div>
-              )}
+      ) : (
+        <>
+          {!previewUrl && (
+            <div className="flex items-center justify-center min-h-[60vh] w-full">
+              <label className="border-2 border-dashed dark:border-white/30 border-gray-400 rounded-2xl px-12 py-20 flex flex-col items-center justify-center gap-4 w-full max-w-xl bg-white dark:bg-[#111] cursor-pointer hover:shadow-lg transition-all">
+                <Inbox className="w-10 h-10 text-gray-500 dark:text-gray-400" />
+                <span className="text-gray-500 dark:text-gray-400 text-base font-medium">
+                  Drag and drop your Invoice here
+                </span>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </label>
             </div>
-          </div>
-        </div>
+          )}
+  
+          {previewUrl && (
+            <div className="flex flex-col lg:flex-row gap-6 w-full mt-6 h-[80vh]">
+              <div className="flex-1 w-full h-[80vh]">
+                <iframe
+                  src={`${previewUrl}#zoom=page-fit`}
+                  className="w-full h-full rounded-xl shadow-lg border border-gray-700"
+                  style={{ border: "none" }}
+                  title="PDF Preview"
+                />
+              </div>
+  
+              <div className="flex-1 w-full flex flex-col h-[80vh]">
+                <InvoiceForm
+                  data={parsed}
+                  onChange={handleParsedChange}
+                  onSubmit={handleConfirm}
+                  submitting={uploading}
+                />
+                <div className="flex justify-between items-center mt-4">
+                  {file && (
+                    <div className="flex items-center space-x-4">
+                      <label className="inline-flex items-center px-4 py-2 bg-gray-800 text-sm text-white rounded cursor-pointer hover:bg-gray-700 transition">
+                        Change Document
+                        <input
+                          type="file"
+                          accept=".pdf"
+                          className="hidden"
+                          onChange={handleFileChange}
+                        />
+                      </label>
+                      <span className="text-sm text-gray-400 truncate max-w-xs">
+                        Current file: <span className="font-medium text-white">{file.name}</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+  
+          {loading && <p className="mt-2">Processing Invoice...</p>}
+        </>
       )}
-      {loading && <p className="mt-2">Processing Invoice...</p>}
     </div>
   );
+  
 }
