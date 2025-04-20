@@ -30,22 +30,22 @@ import {
 const data = {
   user: {
     name: "Steve",
-    email: "Steve@example.com",
+    email: "Steve@mesh.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Mesh Inc",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
     {
-      name: "Acme Corp.",
+      name: "Mesh Corp.",
       logo: AudioWaveform,
       plan: "Startup",
     },
     {
-      name: "Evil Corp.",
+      name: "Mesh Corp.",
       logo: Command,
       plan: "Free",
     },
@@ -59,8 +59,8 @@ const data = {
       items: [
         { title: "Home Page", url: "/dashboard" },
         { title: "All Invoices", url: "/dashboard/all-invoices" },
-        { title: "Pending Review", url: "/dashboard/pending" },
-        { title: "Completed", url: "/dashboard/completed" },
+        // { title: "Pending Review", url: "/dashboard/pending" },
+        // { title: "Completed", url: "/dashboard/completed" },
       ],
     },
     {
@@ -72,28 +72,28 @@ const data = {
         { title: "Manual Entry", url: "/invoices/manual" },
       ],
     },
-    {
-      title: "Documentation",
-      url: "/documentation",
-      icon: BookOpen,
-      items: [
-        { title: "Introduction", url: "/documentation/introduction" },
-        { title: "Get Started", url: "/documentation/get-started" },
-        { title: "Tutorials", url: "/documentation/tutorials" },
-        { title: "Changelog", url: "/documentation/changelog" },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: Settings2,
-      items: [
-        { title: "General", url: "/settings/general" },
-        { title: "Team", url: "/settings/team" },
-        { title: "Billing", url: "/settings/billing" },
-        { title: "Limits", url: "/settings/limits" },
-      ],
-    },
+    // {
+    //   title: "Documentation",
+    //   url: "/documentation",
+    //   icon: BookOpen,
+    //   items: [
+    //     { title: "Introduction", url: "/documentation/introduction" },
+    //     { title: "Get Started", url: "/documentation/get-started" },
+    //     { title: "Tutorials", url: "/documentation/tutorials" },
+    //     { title: "Changelog", url: "/documentation/changelog" },
+    //   ],
+    // },
+    // {
+    //   title: "Settings",
+    //   url: "/settings",
+    //   icon: Settings2,
+    //   items: [
+    //     { title: "General", url: "/settings/general" },
+    //     { title: "Team", url: "/settings/team" },
+    //     { title: "Billing", url: "/settings/billing" },
+    //     { title: "Limits", url: "/settings/limits" },
+    //   ],
+    // },
   ],
   // projects: [
   //   {

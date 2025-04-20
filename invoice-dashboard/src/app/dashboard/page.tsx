@@ -42,29 +42,40 @@ export default async function Page() {
           <ModeToggle />
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="flex flex-1 flex-col gap-6 p-6 pt-0 w-full max-w-7xl mx-auto">
+          <h2 className="text-2xl font-semibold tracking-tight mb-2">Dashboard Overview</h2>
+
           {/* Summary Cards */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="rounded-xl bg-muted/50 h-48 p-4 flex flex-col justify-center">
-              <p className="text-muted-foreground mb-2">Total Revenue</p>
-              <p className="text-2xl font-bold">${totalRevenue.toFixed(2)}</p>
-            </div>
-            <div className="rounded-xl bg-muted/50 h-48 p-4 flex flex-col justify-center">
-              <p className="text-muted-foreground mb-2">Pending Invoices</p>
-              <p className="text-2xl font-bold">{totalPending}</p>
-            </div>
-            <div className="rounded-xl bg-muted/50 h-48 p-4 flex flex-col justify-center">
-              <p className="text-muted-foreground mb-2">Need Review</p>
-              <p className="text-2xl font-bold">{reviewCount}</p>
-            </div>
+            {[
+              { label: "Total Revenue", value: `$${totalRevenue.toFixed(2)}` },
+              { label: "Pending Invoices", value: totalPending },
+              { label: "Need Review", value: reviewCount },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="rounded-2xl bg-muted/40 p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow"
+              >
+                <p className="text-sm text-muted-foreground">{item.label}</p>
+                <p className="text-3xl font-semibold mt-2">{item.value}</p>
+              </div>
+            ))}
           </div>
 
           {/* Charts */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="rounded-xl bg-muted/50 md:col-span-2 p-4">
+            <div className="rounded-2xl bg-muted/40 p-6 flex flex-col md:col-span-2 shadow-sm">
+              <h3 className="text-sm font-medium text-muted-foreground mb-4">Weekly Activity</h3>
               <Chart2 />
             </div>
-            <div className="rounded-xl bg-muted/50 p-4">
+
+            <div className="rounded-2xl bg-muted/40 p-6 flex flex-col shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-medium text-muted-foreground">Invoices by Month</h3>
+                <div className="text-xs bg-muted text-foreground px-2 py-1 rounded-md">
+                  January
+                </div>
+              </div>
               <PieChart1 />
             </div>
           </div>

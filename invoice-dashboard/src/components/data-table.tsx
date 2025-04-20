@@ -440,7 +440,7 @@ export function DataTable({
         value="outline"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
-        <div className="overflow-hidden rounded-lg border">
+        <div className="overflow-hidden rounded-xl border border-white/5 shadow-sm">
           <DndContext
             collisionDetection={closestCenter}
             modifiers={[restrictToVerticalAxis]}
@@ -573,10 +573,10 @@ export function DataTable({
         value="past-performance"
         className="flex flex-col px-4 lg:px-6"
       >
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+        <div className="aspect-video w-full flex-1 rounded-lg border-dashed"></div>
       </TabsContent>
       <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+        <div className="aspect-video w-full flex-1 rounded-lg border-dashed"></div>
       </TabsContent>
       <TabsContent
         value="focus-documents"
@@ -610,6 +610,11 @@ const chartConfig = {
 
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
   const isMobile = useIsMobile();
+  const [status, setStatus] = React.useState(item.status);
+  const [amount, setAmount] = React.useState(item.amount);
+  const [date, setDate] = React.useState<Date | undefined>(
+    item.date ? new Date(item.date) : undefined
+  );
 
   return (
     <Sheet>
@@ -618,112 +623,113 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           {item.vendor}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="flex flex-col">
-        <SheetHeader className="gap-1">
-          <SheetTitle>{item.vendor}</SheetTitle>
-          <SheetDescription>
-            Showing total visitors for the last 6 months
+
+      <SheetContent side="right" className="flex flex-col space-y-6 p-6 max-w-md">
+        {/* Header */}
+        <SheetHeader>
+          <SheetTitle className="text-xl">{item.vendor}</SheetTitle>
+          <SheetDescription className="text-muted-foreground">
+            Review and update invoice details
           </SheetDescription>
         </SheetHeader>
-        <div className="flex flex-1 flex-col gap-4 overflow-y-auto py-4 text-sm">
-          {!isMobile && (
-            <>
-              <ChartContainer config={chartConfig}>
-                <AreaChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{
-                    left: 0,
-                    right: 10,
-                  }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                    hide
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="dot" />}
-                  />
-                  <Area
-                    dataKey="mobile"
-                    type="natural"
-                    fill="var(--color-mobile)"
-                    fillOpacity={0.6}
-                    stroke="var(--color-mobile)"
-                    stackId="a"
-                  />
-                  <Area
-                    dataKey="desktop"
-                    type="natural"
-                    fill="var(--color-desktop)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-desktop)"
-                    stackId="a"
-                  />
-                </AreaChart>
-              </ChartContainer>
-              <Separator />
-              <div className="grid gap-2">
-                <div className="flex gap-2 font-medium leading-none">
-                  Trending up by 5.2% this month{" "}
-                  <TrendingUpIcon className="size-4" />
-                </div>
-                <div className="text-muted-foreground">
-                  Showing total visitors for the last 6 months. This is just
-                  some random text to test the layout. It spans multiple lines
-                  and should wrap around.
-                </div>
-              </div>
-              <Separator />
-            </>
-          )}
-          <form className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="header">Header</Label>
-              <Input id="header" defaultValue={item.vendor} />
+
+        {/* Chart Section */}
+        {!isMobile && (
+          <div className="space-y-4">
+            <ChartContainer config={chartConfig}>
+              <AreaChart data={chartData}>
+                <XAxis dataKey="month" hide />
+                <CartesianGrid vertical={false} />
+                <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
+                <Area
+                  dataKey="mobile"
+                  type="natural"
+                  fill="var(--color-mobile)"
+                  fillOpacity={0.4}
+                  stroke="var(--color-mobile)"
+                  stackId="a"
+                />
+                <Area
+                  dataKey="desktop"
+                  type="natural"
+                  fill="var(--color-desktop)"
+                  fillOpacity={0.3}
+                  stroke="var(--color-desktop)"
+                  stackId="a"
+                />
+              </AreaChart>
+            </ChartContainer>
+
+            <div>
+              <p className="text-sm font-medium flex items-center gap-1">
+                Trending up by 5.2% this month <TrendingUpIcon className="h-4 w-4" />
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Showing total Invoice for the last 6 months.
+              </p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
-                <Select defaultValue={item.status}>
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select a status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Done">Done</SelectItem>
-                    <SelectItem value="In Progress">In Progress</SelectItem>
-                    <SelectItem value="Not Started">Not Started</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <Separator />
+          </div>
+        )}
+
+        {/* Form Section */}
+        <form className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="vendor">Vendor</Label>
+            <Input id="vendor" value={item.vendor} readOnly />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="status">Status</Label>
+            <Select value={status} onValueChange={setStatus}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Done">Done</SelectItem>
+                <SelectItem value="In Process">In Process</SelectItem>
+                <SelectItem value="Pending">Pending</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="amount">Amount</Label>
+              <Input
+                id="amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="amount">Amount</Label>
-                <Input id="amount" defaultValue={item.amount} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="limit">Date</Label>
-                <Input id="limit" defaultValue={item.date} />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="date">Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal"
+                  >
+                    {date ? format(date, "yyyy-MM-dd") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="p-0">
+                  <Calendar mode="single" selected={date} onSelect={setDate} />
+                </PopoverContent>
+              </Popover>
             </div>
-          </form>
-        </div>
-        <SheetFooter className="mt-auto flex gap-2 sm:flex-col sm:space-x-0">
-          <Button className="w-full">Submit</Button>
+          </div>
+        </form>
+
+        {/* Footer */}
+        <SheetFooter className="flex flex-col gap-2 mt-auto">
+          <Button onClick={() => toast.success("Updated successfully!")}>Submit</Button>
           <SheetClose asChild>
-            <Button variant="outline" className="w-full">
-              Done
-            </Button>
+            <Button variant="outline">Done</Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
   );
 }
+
