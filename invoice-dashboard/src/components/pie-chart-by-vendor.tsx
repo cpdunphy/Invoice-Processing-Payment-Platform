@@ -26,13 +26,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function PieChart1({ data }: { data: { name: string; value: number }[] }) {
-  const id = "pie-interactive";
-  const [activeKey, setActiveKey] = React.useState(data[0]?.name ?? "");
+export function PieChartByVendor({ data }: { data: { name: string; value: number }[] }) {
+  const id = "pie-by-vendor";
+  const [activeVendor, setActiveVendor] = React.useState(data[0]?.name ?? "");
 
   const activeIndex = React.useMemo(
-    () => data.findIndex((item) => item.name === activeKey),
-    [activeKey, data]
+    () => data.findIndex((item) => item.name === activeVendor),
+    [activeVendor, data]
   );
 
   const keys = React.useMemo(() => data.map((item) => item.name), [data]);
@@ -52,15 +52,15 @@ export function PieChart1({ data }: { data: { name: string; value: number }[] })
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">
-          <CardTitle>Pie Chart</CardTitle>
-          <CardDescription>Status Distribution</CardDescription>
+          <CardTitle>Invoices by Vendor</CardTitle>
+          <CardDescription>Distribution by total spend</CardDescription>
         </div>
-        <Select value={activeKey} onValueChange={setActiveKey}>
+        <Select value={activeVendor} onValueChange={setActiveVendor}>
           <SelectTrigger
             className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
-            aria-label="Select a value"
+            aria-label="Select vendor"
           >
-            <SelectValue placeholder="Select status" />
+            <SelectValue placeholder="Select vendor" />
           </SelectTrigger>
           <SelectContent align="end" className="rounded-xl">
             {keys.map((key) => {
@@ -109,11 +109,11 @@ export function PieChart1({ data }: { data: { name: string; value: number }[] })
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                     return (
                       <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                        <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-3xl font-bold">
-                          {data[activeIndex]?.value.toLocaleString()}
+                        <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-2xl font-bold">
+                          ${data[activeIndex]?.value.toFixed(2)}
                         </tspan>
                         <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
-                          Invoices
+                          Total
                         </tspan>
                       </text>
                     );

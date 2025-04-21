@@ -14,13 +14,42 @@ import {
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/ModeToggle";
 import { PieChart1 } from "@/components/pie-chart1";
-import { getInvoices } from "@/lib/db/queries";
+import { PieChartByVendor } from "@/components/pie-chart-by-vendor";
+import {
+  getInvoices,
+  getInvoiceCount,
+  getInvoiceCountByStatus,
+  getInvoiceTotalsByVendor,
+  getInvoiceCountByMonth
+} from "@/lib/db/queries";
 
 export default async function Page() {
   const invoices = await getInvoices();
+  const invoiceCount = await getInvoiceCount();
+  
+  const raw = await getInvoiceCountByMonth();
+  const monthlyData = raw.rows;
+
+  const chartData = monthlyData.map((row: any) => ({
+    date: row.month,         // e.g. "2024-04"
+    count: Number(row.count)
+  }));
+
+  const statusData = await getInvoiceCountByStatus();
+  const pie1Data = statusData.map((item) => ({
+    name: item.status ?? "Unknown",
+    value: item.count,
+  }));
+
+  const vendorData = await getInvoiceTotalsByVendor();
+  const pie2Data = vendorData.map((item) => ({
+    name: item.vendor ?? "Unknown",
+    value: Number(item.total),
+  }));
+  
 
   const totalRevenue = invoices.reduce((sum, inv) => sum + Number(inv.totalAmount || 0), 0);
-  const totalPending = invoices.filter((inv) => inv.status === "Pending").length;
+  const totalPending = invoices.filter((inv) => inv.status === "In Process").length;
   const reviewCount = invoices.filter((inv) => !inv.reviewed).length;
 
   return (
@@ -46,8 +75,9 @@ export default async function Page() {
           <h2 className="text-2xl font-semibold tracking-tight mb-2">Dashboard Overview</h2>
 
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {[
+              {label: "Total Invoices",  value:invoiceCount},
               { label: "Total Revenue", value: `$${totalRevenue.toFixed(2)}` },
               { label: "Pending Invoices", value: totalPending },
               { label: "Need Review", value: reviewCount },
@@ -61,22 +91,28 @@ export default async function Page() {
               </div>
             ))}
           </div>
-
+            
           {/* Charts */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="rounded-2xl bg-muted/40 p-6 flex flex-col md:col-span-2 shadow-sm">
-              <h3 className="text-sm font-medium text-muted-foreground mb-4">Weekly Activity</h3>
-              <Chart2 />
+              <h3 className="text-sm font-medium text-muted-foreground mb-4">Monthly Activity</h3>
+              <Chart2 data={chartData} />
             </div>
 
-            <div className="rounded-2xl bg-muted/40 p-6 flex flex-col shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium text-muted-foreground">Invoices by Month</h3>
-                <div className="text-xs bg-muted text-foreground px-2 py-1 rounded-md">
-                  January
+            <div className="flex flex-col gap-4">
+              <div className="rounded-2xl bg-muted/40 p-3 flex flex-col shadow-sm w-full max-w-[300px]">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-medium text-muted-foreground">Invoices by Status</h3>
                 </div>
+                <PieChart1 data={pie1Data} />
               </div>
-              <PieChart1 />
+
+              <div className="rounded-2xl bg-muted/40 p-3 flex flex-col shadow-sm w-full max-w-[300px]">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-medium text-muted-foreground">Invoices by Vendor</h3>
+                </div>
+                <PieChartByVendor data={pie2Data} />
+              </div>
             </div>
           </div>
         </div>

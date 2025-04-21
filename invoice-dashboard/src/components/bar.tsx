@@ -1,8 +1,8 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Bar, BarChart, XAxis } from "recharts"
 import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
 
 import {
   Card,
@@ -17,27 +17,20 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { date: "2024-07-15", running: 450, swimming: 300 },
-  { date: "2024-07-16", running: 380, swimming: 420 },
-  { date: "2024-07-17", running: 520, swimming: 120 },
-  { date: "2024-07-18", running: 140, swimming: 550 },
-  { date: "2024-07-19", running: 600, swimming: 350 },
-  { date: "2024-07-20", running: 480, swimming: 400 },
-]
+
+type InvoiceByDate = {
+  date: string
+  count: number
+}
 
 const chartConfig = {
-  running: {
-    label: "Running",
+  invoices: {
+    label: "Invoices",
     color: "hsl(var(--chart-1))",
-  },
-  swimming: {
-    label: "Swimming",
-    color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
 
-export function Chart2() {
+export function Chart2({ data }: { data: InvoiceByDate[] }) {
   const { theme } = useTheme()
   const [isDark, setIsDark] = useState(false)
 
@@ -45,49 +38,39 @@ export function Chart2() {
     setIsDark(true)
   }, [])
 
-  if(!isDark) return null
+  if (!isDark) return null
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tooltip - Default</CardTitle>
-        <CardDescription>
-          Default tooltip with ChartTooltipContent.
-        </CardDescription>
+        <CardTitle>Invoices Over Time</CardTitle>
+        <CardDescription>Monthly uploads</CardDescription>
       </CardHeader>
       <CardContent>
-      <ChartContainer config={chartConfig}>
-  <BarChart accessibilityLayer data={chartData}>
-    <XAxis
-      dataKey="date"
-      tickLine={false}
-      tickMargin={10}
-      axisLine={false}
-      tickFormatter={(value) =>
-        new Date(value).toLocaleDateString("en-US", {
-          weekday: "short",
-        })
-      }
-    />
-    <Bar
-      dataKey="running"
-      stackId="a"
-      fill="hsl(var(--chart-1))"
-      radius={[0, 0, 4, 4]}
-    />
-    <Bar
-      dataKey="swimming"
-      stackId="a"
-      fill="hsl(var(--chart-2))"
-      radius={[4, 4, 0, 0]}
-    />
-    <ChartTooltip
-      content={<ChartTooltipContent />}
-      cursor={false}
-      defaultIndex={1}
-    />
-  </BarChart>
-</ChartContainer>
+        <ChartContainer config={chartConfig}>
+          <BarChart data={data}>
+          <XAxis
+  dataKey="date"
+  tickLine={false}
+  tickMargin={10}
+  axisLine={false}
+  tickFormatter={(value) =>
+    new Date(`${value}-02`).toLocaleDateString("en-US", {
+      month: "short",
+      year: "2-digit",
+    })
+  }
+/>
+
+            <Bar
+              dataKey="count"
+              stackId="a"
+              fill="hsl(var(--chart-1))"
+              radius={[4, 4, 0, 0]}
+            />
+            <ChartTooltip content={<ChartTooltipContent />} cursor={false} />
+          </BarChart>
+        </ChartContainer>
       </CardContent>
     </Card>
   )
