@@ -41,13 +41,13 @@ export function Chart2({ data }: { data: InvoiceByDate[] }) {
   if (!isDark) return null
 
   return (
-    <Card>
+    <Card className="flex flex-col h-[430px]">
       <CardHeader>
         <CardTitle>Invoices Over Time</CardTitle>
         <CardDescription>Monthly uploads</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="w-full h-[300px]">
           <BarChart data={data}>
           <XAxis
   dataKey="date"

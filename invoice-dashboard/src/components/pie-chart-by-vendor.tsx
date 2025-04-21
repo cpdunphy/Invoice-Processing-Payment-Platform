@@ -48,7 +48,7 @@ export function PieChartByVendor({ data }: { data: { name: string; value: number
   );
 
   return (
-    <Card data-chart={id} className="flex flex-col">
+    <Card data-chart={id} className="flex flex-col h-[430px]">
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">
@@ -86,7 +86,7 @@ export function PieChartByVendor({ data }: { data: { name: string; value: number
         <ChartContainer
           id={id}
           config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[300px]"
+          className="mx-auto aspect-square w-full max-w-[350px]"
         >
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />

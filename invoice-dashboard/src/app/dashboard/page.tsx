@@ -93,26 +93,29 @@ export default async function Page() {
           </div>
             
           {/* Charts */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="rounded-2xl bg-muted/40 p-6 flex flex-col md:col-span-2 shadow-sm">
-              <h3 className="text-sm font-medium text-muted-foreground mb-4">Monthly Activity</h3>
-              <Chart2 data={chartData} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+            {/* Chart 1: Bar Chart (Weekly or Monthly Activity) */}
+            <div className="rounded-2xl bg-muted/40 p-4 shadow-sm flex flex-col h-[500px]">
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">
+              Monthly Uploads
+              </h3>
+            <Chart2 data={chartData} />
             </div>
 
-            <div className="flex flex-col gap-4">
-              <div className="rounded-2xl bg-muted/40 p-3 flex flex-col shadow-sm w-full max-w-[300px]">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-muted-foreground">Invoices by Status</h3>
-                </div>
-                <PieChart1 data={pie1Data} />
-              </div>
+            {/* Chart 2: Pie Chart by Status */}
+            <div className="rounded-2xl bg-muted/40 p-4 shadow-sm flex flex-col h-[500px]">
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">
+              Invoices by Status
+              </h3>
+              <PieChart1 data={pie1Data} />
+            </div>
 
-              <div className="rounded-2xl bg-muted/40 p-3 flex flex-col shadow-sm w-full max-w-[300px]">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-muted-foreground">Invoices by Vendor</h3>
-                </div>
-                <PieChartByVendor data={pie2Data} />
-              </div>
+            {/* Chart 3: Pie Chart by Vendor */}
+            <div className="rounded-2xl bg-muted/40 p-4 shadow-sm flex flex-col h-[500px]">
+             <h3 className="text-sm font-medium text-muted-foreground mb-2">
+              Invoices by Vendor
+              </h3>
+              <PieChartByVendor data={pie2Data} />
             </div>
           </div>
         </div>
